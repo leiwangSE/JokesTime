@@ -1,5 +1,6 @@
 
- 
+
+import java.awt.TexturePaint;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -18,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ControllerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private StudentDao studentDao;
+    private UserDao userDao;
  
     
     public void init() {
@@ -26,7 +27,7 @@ public class ControllerServlet extends HttpServlet {
         String jdbcUsername = getServletContext().getInitParameter("jdbcUsername");
         String jdbcPassword = getServletContext().getInitParameter("jdbcPassword");
  
-        studentDao = new StudentDao(jdbcURL, jdbcUsername, jdbcPassword);
+        userDao = new UserDao(jdbcURL, jdbcUsername, jdbcPassword);
  
     }
  
@@ -40,26 +41,30 @@ public class ControllerServlet extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getServletPath();
  
+        System.out.println("Action: V2222222222" +action);
         try {
             switch (action) {
             case "/new":
                 showNewForm(request, response);
                 break;
-                
+               
             case "/insert":
-                insertStudent(request, response);
+                insertUser(request, response);
                 break;
             case "/delete":
-                deleteStudent(request, response);
+                deleteUser(request, response);
                 break;
             case "/edit":
                 showEditForm(request, response);
                 break;
             case "/update":
-                updateStudent(request, response);
+                updateUser(request, response);
+                break;
+            case "/login":
+                loginUser(request, response);
                 break;
             default:
-                listStudent(request, response);
+                listUser(request, response);
                 break;
             }
         } catch (SQLException ex) {
@@ -67,65 +72,91 @@ public class ControllerServlet extends HttpServlet {
         }
     }
  
-    private void listStudent(HttpServletRequest request, HttpServletResponse response)
+    private void loginUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+		 String email=request.getParameter("email");
+		 String password=request.getParameter("password");
+		 User user= new User();
+		 user.setEmail(email);
+		 user.setPassword(password);
+		 
+		 if(userDao.validate(user)) {
+			 response.sendRedirect("Index.jsp");
+		 }else{
+			 response.sendRedirect("Failed.jsp");
+		 };
+		
+	}
+
+	private void listUser(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        List<Student> listStudent = studentDao.listAllStudents();
+        List<User> listUser = userDao.listAllUsers();
         								
-        request.setAttribute("listStudent", listStudent);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("StudentList.jsp");
+        request.setAttribute("listUser", listUser);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("UserList.jsp");
         dispatcher.forward(request, response);
     }
  
     private void showNewForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("StudentForm.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("Registration.jsp");
         dispatcher.forward(request, response);
     }
  
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        System.out.println(id);
-        Student existingStudent = studentDao.getStudent(id);
-        System.out.println(existingStudent.name);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("StudentForm.jsp");
-        request.setAttribute("student", existingStudent);
+        int user_id = Integer.parseInt(request.getParameter("user_id"));
+        System.out.println(user_id);
+        User existingUser = userDao.getUser(user_id);
+        System.out.println(existingUser.password);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("EditUser.jsp");
+        request.setAttribute("user", existingUser);
         //System.out.println(existingStudent.name);
         dispatcher.forward(request, response);
  
     }
  
-    private void insertStudent(HttpServletRequest request, HttpServletResponse response)
+    private void insertUser(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-        String name = request.getParameter("name");
-        String address = request.getParameter("address");
-        String status =request.getParameter("status");
- 
-        Student newStudent = new Student(name, address, status);
-        studentDao.insertStudent(newStudent);
+    	
+        String password = request.getParameter("password");
+        String first_name = request.getParameter("first_name");
+        String last_name = request.getParameter("last_name");
+        String email =request.getParameter("email");
+        String gender = request.getParameter("gender");
+        int age = Integer.parseInt(request.getParameter("age"));
+        String status = request.getParameter("status");
+        User newUser = new User(password, first_name, last_name, email, gender, age, status);
+        userDao.insertUser(newUser);
         response.sendRedirect("list");
     }
- 
-    private void updateStudent(HttpServletRequest request, HttpServletResponse response)
+    
+    private void updateUser(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        String name = request.getParameter("name");
-        String address = request.getParameter("address");
+        int user_id = Integer.parseInt(request.getParameter("user_id"));
+        String password = request.getParameter("password");
+        String first_name = request.getParameter("first_name");
+        String last_name = request.getParameter("last_name");
+        String email = request.getParameter("email");
+        String gender = request.getParameter("gender");
+        int age = Integer.parseInt(request.getParameter("age"));
         String status = request.getParameter("status");
  
-        Student student = new Student(id, name, address, status);
-        studentDao.updateStudent(student);
-        response.sendRedirect("list");
+        User user = new User(user_id, password, first_name, last_name, email, gender, age, status);
+        userDao.updateUser(user);
+        response.sendRedirect("UserList.jsp");
     }
  
-    private void deleteStudent(HttpServletRequest request, HttpServletResponse response)
+    private void deleteUser(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
- 
-        Student student = new Student(id);
+    	System.out.println("user_id=");
+    	System.out.println(request.getParameter("user_id"));
+        int id = Integer.parseInt(request.getParameter("user_id"));
+    	
+        User user = new User(id);
         
-        studentDao.deleteStudent(student);
+        userDao.deleteUser(user);
         response.sendRedirect("list");
  
     }
+    
 }
