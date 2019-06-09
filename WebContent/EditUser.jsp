@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,22 +9,21 @@
 </head>
 <body>
       <div align="center">   
-       <form action="edit" method="post">
-        <table border="1" cellpadding="5">                 
-            <tr hidden>
-                <th>User_id: </th>
-                <td>
-                    <input type="number" name="user_id" size="10"
-                            value="<c:out value='${users.user_id}' />" 
-                        />
-                </td>
-            </tr>
-            
+       <form action="update" method="post">
+        <table border="1" cellpadding="5">
+        <caption>
+                <h2>Edit an Existing User</h2>
+            </caption>                 
+          
+                    <input type="hidden" name="user_id" size="30"
+                          value="<c:out value="${user.user_id}" />" />
+                       
+         
             <tr>
                 <th>Password: </th>
                 <td>
                     <input type="password" name="password" size="50"
-                            value="<c:out value='${users.password}' />"
+                            value="<c:out value="${user.password}" />"
                     />
                 </td>
             </tr>
@@ -31,7 +31,7 @@
                 <th>First Name: </th>
                 <td>
                     <input type="text" name="first_name" size="50"
-                            value="<c:out value='${users.first_name}' />"
+                            value="<c:out value="${user.first_name}" />"
                     />
                 </td>
             </tr>
@@ -39,7 +39,7 @@
                 <th>Last Name: </th>
                 <td>
                     <input type="text" name="last_name" size="50"
-                            value="<c:out value='${users.last_name}' />"
+                            value="<c:out value='${user.last_name}' />"
                     />
                 </td>
             </tr>  
@@ -47,7 +47,7 @@
                 <th>Email: </th>
                 <td>
                     <input type="email" name="email" size="50"
-                            value="<c:out value='${users.email}' />"
+                            value="<c:out value='${user.email}' />"
                     />
                 </td>
             </tr>
@@ -55,7 +55,7 @@
                 <th>Gender: </th>
                 <td>
                     <input type="text" name="gender" size="10"
-                            value="<c:out value='${users.gender}' />"
+                            value="<c:out value='${user.gender}' />"
                     />
                 </td>
             </tr>
@@ -63,21 +63,20 @@
                 <th>Age: </th>
                 <td>
                     <input type="number" name="age" size="11"
-                            value="<c:out value='${users.age}' />"
+                            value="<c:out value='${user.age}' />"
                     />
                 </td>
             </tr>
-           <tr hidden>
-                <th>Status: </th>
-                <td>
-                    <input type="text" name="status" size="10"
-                            value="<c:out value='${users.status}' />"
+           <tr >
+                
+                    <input type="hidden" name="status" size="10"
+                            value="<c:out value='${user.status}' />"
                     />
-                </td>
+                
             </tr>
             <tr>
                 <td colspan="2" align="center">
-                    <input type="submit" value="Submit" />
+                    <input type="submit" value="Save" />
                 </td>
             </tr>
         </table>

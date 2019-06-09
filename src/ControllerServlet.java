@@ -105,12 +105,17 @@ public class ControllerServlet extends HttpServlet {
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
         int user_id = Integer.parseInt(request.getParameter("user_id"));
-        System.out.println(user_id);
         User existingUser = userDao.getUser(user_id);
-        System.out.println(existingUser.password);
         RequestDispatcher dispatcher = request.getRequestDispatcher("EditUser.jsp");
         request.setAttribute("user", existingUser);
-        //System.out.println(existingStudent.name);
+        
+//        System.out.println(user_id);
+//        
+//        System.out.println(existingUser.email);
+//        System.out.println(existingUser.password);
+//        System.out.println(existingUser.gender);
+//        System.out.println(existingUser.age);
+        
         dispatcher.forward(request, response);
  
     }

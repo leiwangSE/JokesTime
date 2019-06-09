@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * AbstractDAO.java
- * This DAO class provides CRUD database operations for the table book
+ * This DAO class provides CRUD database operations for the table users
  * in the database.
  * @author Lei
  *
@@ -114,7 +114,7 @@ public class UserDao {
     }
      
     public boolean updateUser(User user) throws SQLException {
-        String sql = "UPDATE users SET email=?, password = ?, first_name = ?, last_name = ?,  gender=?, age=?, status=? where user_id=?";
+        String sql = "UPDATE users SET  password = ?, first_name = ?, last_name = ?, email=?, gender=?, age=?, status=?, where user_id=?";
         connect();
          
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
@@ -125,6 +125,7 @@ public class UserDao {
         statement.setString(5, user.getLast_name());
         statement.setInt(6, user.getAge());
         statement.setString(7, user.getStatus());
+        statement.setInt(8, user.getUser_id());
          
         boolean rowUpdated = statement.executeUpdate() > 0;
         statement.close();
@@ -152,7 +153,7 @@ public class UserDao {
              String gender = resultSet.getString("gender");
              int age =Integer.parseInt(resultSet.getString("age")) ;
              String status  = resultSet.getString("status"); 
-             user= new User(user_id, email, password, first_name, last_name, gender, age, status);
+             user= new User(user_id, password, first_name, last_name, email, gender, age, status);
         }
          
         resultSet.close();
