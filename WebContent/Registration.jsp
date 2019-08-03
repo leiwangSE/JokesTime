@@ -46,10 +46,10 @@
        <div align="center">   
        <form action="insert" method="post">
         <table border="1" cellpadding="5">                 
-            <tr hidden>
+            <tr >
                 <th>User_id: </th>
                 <td>
-                    <input type="number" name="user_id" size="10"
+                    <input type="text" name="user_id" size="38"
                             value="" 
                         />
                 </td>
@@ -79,14 +79,6 @@
                     />
                 </td>
             </tr>  
-            <tr>
-                <th>Email: </th>
-                <td>
-                    <input type="email" name="email" size="50"
-                            value=""
-                    />
-                </td>
-            </tr>
             <tr>
                 <th>Gender: </th>
                 <td>

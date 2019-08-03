@@ -1,5 +1,3 @@
-
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -38,8 +36,7 @@ public class UserDao {
                 throw new SQLException(e);
             }
             //setup connection with DB;
-            jdbcConnection = DriverManager.getConnection(
-                                        jdbcURL, jdbcUsername, jdbcPassword);
+            jdbcConnection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
         }
     }
      //disconnect with the DB;
@@ -50,13 +47,13 @@ public class UserDao {
     }
      //prepareStatement allows to issue SQL query to DB
     public boolean insertUser(User user) throws SQLException {
-        String sql = "INSERT INTO users (password, first_name, last_name, email, gender, age, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO users (user_id, password, first_name, last_name, gender, age, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
         connect();
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-        statement.setString(1, user.getPassword());
-        statement.setString(2, user.getFirst_name());
-        statement.setString(3, user.getLast_name());
-        statement.setString(4, user.getEmail());
+        statement.setString(1, user.getUser_id());
+        statement.setString(2, user.getPassword());
+        statement.setString(3, user.getFirst_name());
+        statement.setString(4, user.getLast_name());
         statement.setString(5, user.getGender());
         statement.setInt(6, user.getAge());
         statement.setString(7, user.getStatus());
@@ -77,15 +74,14 @@ public class UserDao {
         ResultSet resultSet = statement.executeQuery(sql);
          
         while (resultSet.next()) {
-            int user_id = Integer.parseInt(resultSet.getString("user_id"));
+            String user_id = resultSet.getString("user_id");
             String password = resultSet.getString("password");
             String first_name = resultSet.getString("first_name");
             String last_name = resultSet.getString("last_name");
-            String email = resultSet.getString("email");
             String gender = resultSet.getString("gender");
             int age =Integer.parseInt(resultSet.getString("age")) ;
             String status  = resultSet.getString("status"); 
-            User user = new User(user_id, password, first_name, last_name,  email, gender, age, status);
+            User user = new User(user_id, password, first_name, last_name, gender, age, status);
             listUser.add(user);
             //System.out.println("user_id");
         }
@@ -104,28 +100,26 @@ public class UserDao {
         connect();
          
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-        statement.setInt(1, user.getUser_id());
+        statement.setString(1, user.getUser_id());
          
         boolean rowDeleted = statement.executeUpdate() > 0;
         statement.close();
         disconnect();
-        return rowDeleted;     
-        
+        return rowDeleted;      
     }
      
     public boolean updateUser(User user) throws SQLException {
-        String sql = "UPDATE users SET  password = ?, first_name = ?, last_name = ?, email=?, gender=?, age=?, status=?, where user_id=?";
+        String sql = "UPDATE users SET  password = ?, first_name = ?, last_name = ?, gender=?, age=?, status=? where user_id=?";
         connect();
          
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
         statement.setString(1, user.getPassword());
         statement.setString(2, user.getFirst_name());
         statement.setString(3, user.getLast_name());
-        statement.setString(4, user.getEmail());
-        statement.setString(5, user.getLast_name());
-        statement.setInt(6, user.getAge());
-        statement.setString(7, user.getStatus());
-        statement.setInt(8, user.getUser_id());
+        statement.setString(4, user.getGender());
+        statement.setInt(5, user.getAge());
+        statement.setString(6, user.getStatus());
+        statement.setString(7, user.getUser_id());
          
         boolean rowUpdated = statement.executeUpdate() > 0;
         statement.close();
@@ -133,27 +127,26 @@ public class UserDao {
         return rowUpdated;     
     }
      
-    public User getUser(int id) throws SQLException {
+    public User getUser(String id) throws SQLException {
         User user = null;
         String sql = "SELECT * FROM users WHERE user_id = ?";
          
         connect();
          
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-        statement.setInt(1, id);
+        statement.setString(1, id);
          
         ResultSet resultSet = statement.executeQuery();
          
         if (resultSet.next()) {
-        	 int user_id = Integer.parseInt(resultSet.getString("user_id"));
-             String email = resultSet.getString("email");
+        	 String user_id = resultSet.getString("user_id");
              String password = resultSet.getString("password");
              String first_name = resultSet.getString("first_name");
              String last_name = resultSet.getString("last_name");
              String gender = resultSet.getString("gender");
              int age =Integer.parseInt(resultSet.getString("age")) ;
              String status  = resultSet.getString("status"); 
-             user= new User(user_id, password, first_name, last_name, email, gender, age, status);
+             user= new User(user_id, password, first_name, last_name, gender, age, status);
         }
          
         resultSet.close();
@@ -164,12 +157,12 @@ public class UserDao {
 	
 	public boolean validate(User user) throws SQLException {
 		boolean status=false;
-		String sql = "SELECT * FROM joke.users where email=? and password=?";
+		String sql = "SELECT * FROM joke.users where user_id=? and password=?";
         
         connect();
         
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-        statement.setString(1, user.getEmail());
+        statement.setString(1, user.getUser_id());
         statement.setString(2, user.getPassword());
         
         //System.out.println(statement);

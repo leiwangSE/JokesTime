@@ -15,7 +15,7 @@
             <a href="list">List All Users</a>
              
         </h2>
-    
+    </center>
     <div align="center">
         <table border="1" cellpadding="5">
             <caption><h2>List of Users</h2><caption>
@@ -24,7 +24,6 @@
                 <th>password</th>
                 <th>first_name</th>
                 <th>last_name</th>
-                <th>email</th>
                 <th>gender</th>
                 <th>age</th>
                 <th>status</th>
@@ -34,8 +33,7 @@
                     <td><c:out value="${user.user_id}" /></td> 
                     <td><c:out value="${user.password}" /></td>
                     <td><c:out value="${user.first_name}" /></td>
-                    <td><c:out value="${user.last_name}" /></td> 
-                    <td><c:out value="${user.email}" /></td>            
+                    <td><c:out value="${user.last_name}" /></td>            
                     <td><c:out value="${user.gender}" /></td>
                     <td><c:out value="${user.age}" /></td>
                     <td><c:out value="${user.status}" /></td>

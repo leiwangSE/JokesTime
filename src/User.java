@@ -15,8 +15,7 @@
  *
  */
 public class User {
-    protected int  user_id; 
-    protected String email;
+    protected String user_id; 
 	protected String password;
     protected String first_name;
     protected String last_name;  
@@ -29,45 +28,38 @@ public class User {
 	public User() {
     }
  
-    public User(int user_id) {
-        this.user_id = user_id;
-    }
-    
-    public User(String email, String password) {
-        this.email=email;
+
+	public User(String user_id) {
+		this.user_id=user_id;
+	}
+    public User(String user_id, String password) {
+    	this.user_id=user_id;
         this.password=password;
     }
     
-    public User(int user_id,  String password, String  first_name, String last_name, String email, String gender,int age, String status) {
-        this(password, first_name, last_name, email, gender, age, status);
+    public User(String user_id,  String password, String  first_name, String last_name, String gender,int age, String status) {
+        this(password, first_name, last_name, gender, age, status);
         this.user_id = user_id;
     }
      
-    public User( String password, String first_name, String last_name ,String email, String gender,int age,String status) {
+    public User( String password, String first_name, String last_name, String gender,int age,String status) {
     	
     	this.password = password;
         this.first_name = first_name;
         this.last_name = last_name;
-        this.email = email;
+        
         this.gender = gender;
         this.age = age;
         this.status = status;
     }
-    public int getUser_id() {
+    public String getUser_id() {
 		return user_id;
 	}
 
-	public void setUser_id(int user_id) {
+	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
 	
 	public String getPassword() {
 		return password;

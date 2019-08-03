@@ -14,11 +14,14 @@
         <caption>
                 <h2>Edit an Existing User</h2>
             </caption>                 
-          
-                    <input type="hidden" name="user_id" size="30"
-                          value="<c:out value="${user.user_id}" />" />
-                       
-         
+          <tr>
+          	<th>User id: </th>
+          	<td>
+                   <input type="text" name="user_id" size="38"
+                            value="<c:out value="${user.user_id}" />"
+                    />
+            </td>     
+         </tr>
             <tr>
                 <th>Password: </th>
                 <td>
@@ -43,14 +46,7 @@
                     />
                 </td>
             </tr>  
-            <tr>
-                <th>Email: </th>
-                <td>
-                    <input type="email" name="email" size="50"
-                            value="<c:out value='${user.email}' />"
-                    />
-                </td>
-            </tr>
+          
             <tr>
                 <th>Gender: </th>
                 <td>
