@@ -12,18 +12,25 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+
+
 public class JokeDao {
 	private String jdbcURL;
     private String jdbcUsername;
     private String jdbcPassword;
     private Connection jdbcConnection;
-     
+    
+    
+    
     public JokeDao(String jdbcURL, String jdbcUsername, String jdbcPassword) {
         this.jdbcURL = jdbcURL;
         this.jdbcUsername = jdbcUsername;
         this.jdbcPassword = jdbcPassword;
     }
-     //connect with DB;
+     public JokeDao() {
+	
+	}
+	//connect with DB;
     protected void connect() throws SQLException {
         if (jdbcConnection == null || jdbcConnection.isClosed()) {
             try {
@@ -97,4 +104,25 @@ public class JokeDao {
         return listJokes;
     }
 
+    public int getJoke_id() throws SQLException {
+		int joke_id=0;
+        String sql = "SELECT max(joke_id) from jokes;";
+         
+        connect();
+        
+        Statement statement = jdbcConnection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+        
+        if(resultSet.next()) {
+        joke_id=Integer.parseInt(resultSet.getString("joke_id"));
+        }
+         
+        resultSet.close();
+        statement.close();
+         
+        disconnect();
+		
+		return joke_id+1;
+    	
+    }
 }

@@ -22,7 +22,7 @@ public class ControllerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private UserDao userDao;
     private JokeDao jokeDao;
- 
+    private TagDao tagDao;
     
     public void init() {
         String jdbcURL = getServletContext().getInitParameter("jdbcURL");
@@ -31,6 +31,7 @@ public class ControllerServlet extends HttpServlet {
  
         userDao = new UserDao(jdbcURL, jdbcUsername, jdbcPassword);
         jokeDao = new JokeDao(jdbcURL, jdbcUsername, jdbcPassword);
+        tagDao = new TagDao(jdbcURL, jdbcUsername, jdbcPassword);
     }
  
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -69,7 +70,7 @@ public class ControllerServlet extends HttpServlet {
                 insertJoke(request, response);
                 break;
             case "/listposts":
-                listJoke(request, response);
+                listJokes(request, response);
                 break;   
             default:
                 listUser(request, response);
@@ -179,21 +180,25 @@ public class ControllerServlet extends HttpServlet {
     	System.out.println(title);
         String description = request.getParameter("description");
         System.out.println(description);
-//      String user_id = request.getParameter("user_id");
         HttpSession session=request.getSession(); 
         String user_id=(String) session.getAttribute("user_id");
+        String tag=request.getParameter("tag");
         
         Joke newJoke = new Joke(title, description,user_id);
         
         jokeDao.insertJoke(newJoke);
         
+        Tag newTag = new Tag(tag);
+        tagDao.insertTag(newTag);
+        
         response.sendRedirect("listposts");
 	}
-    private void listJoke(HttpServletRequest request, HttpServletResponse response)
+    private void listJokes(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        List<Joke> listJoke = jokeDao.listAllJokes();
-        								
-        request.setAttribute("listJokes", listJoke);
+        List<Joke> listJokes = jokeDao.listAllJokes();
+        List<Tag> listTags = tagDao.listTags();								
+        request.setAttribute("listJokes", listJokes);
+        request.setAttribute("listTags", listTags);
         RequestDispatcher dispatcher = request.getRequestDispatcher("ShowPost.jsp");
         dispatcher.forward(request, response);
     }

@@ -21,6 +21,7 @@
                 <th>Title</th>
                 <th>Content</th>
                 <th>User_id</th>
+                <th>Tag</th>
                 <th>Datetime</th>
                
             </tr>
@@ -29,7 +30,11 @@
                     <td><c:out value="${joke.joke_id}" /></td> 
                     <td><c:out value="${joke.title}" /></td>
                     <td><c:out value="${joke.description}" /></td>
-                    <td><c:out value="${joke.user_id}" /></td> 
+                    <td><c:out value="${joke.user_id}" /></td>  
+                    <td><c:forEach var="tag" items="${listTags}">
+                    	<c:out value="${tag.tag}" />
+                    	</c:forEach>
+                    </td> 
                     <td><c:out value="${joke.dateTime}" /></td>            
                     <!--  <td>
                         <a href="edit?user_id=<c:out value='${user.user_id}' />">Edit</a>

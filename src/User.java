@@ -1,7 +1,4 @@
-
-
-
-/**
+/*
  * User.java
  * 
  * secondchange 
@@ -9,8 +6,6 @@
  * 
  * This is the first change I make today
  * @author Lei
- *
- *
  *
  *
  */

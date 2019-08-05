@@ -31,7 +31,7 @@
                     </textarea> --> 
                 </td>
             </tr>
-            <!-- 
+            
             <tr>
                 <th>tags: </th>
                 <td>
@@ -40,7 +40,7 @@
                     />
                 </td>
             </tr>
-             -->
+             
             <tr>
                 <td colspan="2" align="center">
                     <input type="submit" value="Submit" />
