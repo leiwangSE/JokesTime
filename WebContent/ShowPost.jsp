@@ -28,11 +28,16 @@
             <c:forEach var="joke" items="${listJokes}">
                 <tr>
                     <td><c:out value="${joke.joke_id}" /></td> 
+                    
                     <td><c:out value="${joke.title}" /></td>
                     <td><c:out value="${joke.description}" /></td>
                     <td><c:out value="${joke.user_id}" /></td>  
                     <td><c:forEach var="tag" items="${listTags}">
+                       
+                        <c:if joke.joke_id="${tag.joke_id}">
                     	<c:out value="${tag.tag}" />
+                    	</c:if>
+                    	
                     	</c:forEach>
                     </td> 
                     <td><c:out value="${joke.dateTime}" /></td>            
