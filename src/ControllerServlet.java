@@ -182,15 +182,19 @@ public class ControllerServlet extends HttpServlet {
         System.out.println(description);
         HttpSession session=request.getSession(); 
         String user_id=(String) session.getAttribute("user_id");
-        String tag=request.getParameter("tag");
-        
+        System.out.println(user_id);
+        String tag=request.getParameter("tags");
+        System.out.println(tag);
         Joke newJoke = new Joke(title, description,user_id);
         
         jokeDao.insertJoke(newJoke);
         
         Tag newTag = new Tag(tag);
-        tagDao.insertTag(newTag);
+        System.out.println(newTag.getTag());
         
+        
+        tagDao.insertTag(newTag);
+       
         response.sendRedirect("listposts");
 	}
     private void listJokes(HttpServletRequest request, HttpServletResponse response)

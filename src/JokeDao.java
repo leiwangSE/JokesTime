@@ -112,9 +112,10 @@ public class JokeDao {
         
         Statement statement = jdbcConnection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
-        
+        System.out.print(joke_id);
         if(resultSet.next()) {
         joke_id=Integer.parseInt(resultSet.getString("joke_id"));
+        System.out.print(joke_id);
         }
          
         resultSet.close();

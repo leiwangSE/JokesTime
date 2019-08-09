@@ -34,10 +34,12 @@
                     <td><c:out value="${joke.user_id}" /></td>  
                     <td><c:forEach var="tag" items="${listTags}">
                        
-                        <c:if joke.joke_id="${tag.joke_id}">
-                    	<c:out value="${tag.tag}" />
-                    	</c:if>
-                    	
+                       <c:set var = "joke_joke_id" scope = "session" value ="${joke.joke_id}" />
+                       <c:set var = "tag_joke_id" scope = "session" value ="${tag.joke_id}" />
+                       <c:if test="${joke_joke_id== tag_joke_id}" >
+                       <c:out value="${tag.tag}"/>
+                       </c:if>
+	              
                     	</c:forEach>
                     </td> 
                     <td><c:out value="${joke.dateTime}" /></td>            
