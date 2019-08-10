@@ -17,6 +17,10 @@ public class Tag {
    public Tag(String tag) {
 	   this.tag=tag;
    }
+   public Tag(String tag, int joke_id) {
+	   this.tag=tag;
+	   this.joke_id=joke_id;
+   }
    public Tag(int tag_id, String tag, int joke_id) {
 	   this.tag_id=tag_id;
 	   this.tag=tag;

@@ -104,18 +104,19 @@ public class JokeDao {
         return listJokes;
     }
 
-    public int getJoke_id() throws SQLException {
-		int joke_id=0;
+    public Joke getJoke() throws SQLException {
+    	Joke maxJoke=null;
         String sql = "SELECT max(joke_id) from jokes;";
          
         connect();
         
         Statement statement = jdbcConnection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
-        System.out.print(joke_id);
-        if(resultSet.next()) {
-        joke_id=Integer.parseInt(resultSet.getString("joke_id"));
-        System.out.print(joke_id);
+        
+        if (resultSet.next()) {
+        	int joke_id = Integer.parseInt(resultSet.getString("max(joke_id)"));
+       
+        maxJoke = new Joke(joke_id);
         }
          
         resultSet.close();
@@ -123,7 +124,7 @@ public class JokeDao {
          
         disconnect();
 		
-		return joke_id+1;
+		return maxJoke;
     	
     }
 }

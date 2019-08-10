@@ -45,9 +45,10 @@ public class TagDao {
         String sql = "INSERT INTO tags (tag, joke_id) VALUES (?, ?)";
         connect();
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-        int joke_id=newJoke.getJoke_id();
+        
+        
         statement.setString(1, tag.getTag());
-        statement.setInt(2, joke_id);
+        statement.setInt(2, tag.getJoke_id());
        
         boolean rowInserted = statement.executeUpdate() > 0;
         statement.close();

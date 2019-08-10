@@ -19,7 +19,10 @@ public class Joke {
     	 this.description=description;
     	 this.user_id=user_id;
     	 this.datetime=datetime;
-    	 
+     }
+     
+     public Joke(int joke_id) {
+    	 this.joke_id=joke_id;
      }
      
      public Joke(String title,String Description, String user_id)
