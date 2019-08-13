@@ -23,6 +23,7 @@ public class ControllerServlet extends HttpServlet {
     private UserDao userDao;
     private JokeDao jokeDao;
     private TagDao tagDao;
+    private ReviewDao reviewDao;
     
     public void init() {
         String jdbcURL = getServletContext().getInitParameter("jdbcURL");
@@ -32,6 +33,8 @@ public class ControllerServlet extends HttpServlet {
         userDao = new UserDao(jdbcURL, jdbcUsername, jdbcPassword);
         jokeDao = new JokeDao(jdbcURL, jdbcUsername, jdbcPassword);
         tagDao = new TagDao(jdbcURL, jdbcUsername, jdbcPassword);
+        reviewDao = new ReviewDao(jdbcURL, jdbcUsername, jdbcPassword);
+        
     }
  
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -42,6 +45,11 @@ public class ControllerServlet extends HttpServlet {
  
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	HttpSession session = request.getSession(false);
+    	  if (session == null)
+    	  {
+    		  response.sendRedirect("Login.jsp");
+    	  }
         String action = request.getServletPath();
  
         System.out.println("Action: V2222222222" + action);
@@ -67,12 +75,18 @@ public class ControllerServlet extends HttpServlet {
                 loginUser(request, response);
                 break;
             case "/post":
-                insertJoke(request, response);
-                insertTag(request, response);
+            	if(null == session.getAttribute("user_id")){  
+            		response.sendRedirect("Login.jsp");
+            		}else{  
+            			 insertJoke(request, response);
+                         insertTag(request, response); 
+            		} 
                 break;
             case "/listposts":
                 listJokes(request, response);
-                break;   
+                break;  
+            case "/review":
+            	insertReview(request, response);
             default:
                 listUser(request, response);
                 break;
@@ -84,6 +98,16 @@ public class ControllerServlet extends HttpServlet {
  
    
 	
+	private void insertReview(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+		int score = Integer.parseInt(request.getParameter("score"));
+		String remark = request.getParameter("remark");
+		int joke_id = Integer.parseInt(request.getParameter("joke_id"));
+		int user_id = Integer.parseInt(request.getParameter("user_id"));
+		
+		Review review = new Review(score, remark, joke_id, user_id);
+        reviewDao.insertReview(review);
+        response.sendRedirect("list");
+	}
 
 	private void loginUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
 		 String user_id=request.getParameter("user_id");
@@ -94,7 +118,7 @@ public class ControllerServlet extends HttpServlet {
 		 
 		 if(userDao.validate(user)) {
 			 HttpSession session=request.getSession();  
-		        session.setAttribute("user_id",user_id); 
+		     session.setAttribute("user_id",user_id); 
 			 response.sendRedirect("JokePost.jsp");
 		 }else{
 			 response.sendRedirect("Failed.jsp");
@@ -179,11 +203,13 @@ public class ControllerServlet extends HttpServlet {
     
     private void insertJoke(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
     	
+    	
     	String title = request.getParameter("title");
     	System.out.println(title);
         String description = request.getParameter("description");
         System.out.println(description);
         HttpSession session=request.getSession(); 
+        
         String user_id=(String) session.getAttribute("user_id");
         System.out.println(user_id);
         

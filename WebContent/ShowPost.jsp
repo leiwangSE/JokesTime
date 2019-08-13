@@ -23,7 +23,7 @@
                 <th>User_id</th>
                 <th>Tag</th>
                 <th>Datetime</th>
-               
+                <th>review</th>
             </tr>
             <c:forEach var="joke" items="${listJokes}">
                 <tr>
@@ -39,10 +39,14 @@
                        <c:if test="${joke_joke_id== tag_joke_id}" >
                        <c:out value="${tag.tag}"/>
                        </c:if>
-	              
+	                
                     	</c:forEach>
                     </td> 
-                    <td><c:out value="${joke.dateTime}" /></td>            
+                    
+                    <td><c:out value="${joke.dateTime}" /></td>  
+                    <td>
+                    <a href="review?user_id=<c:out value='${joke.user_id}'&joke_id=<c:out value='${joke.joke_id}' />">review</a> 
+                    </td>       
                     <!--  <td>
                         <a href="edit?user_id=<c:out value='${user.user_id}' />">Edit</a>
                         &nbsp;&nbsp;&nbsp;&nbsp;
